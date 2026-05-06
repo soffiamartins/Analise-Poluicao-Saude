@@ -12,6 +12,7 @@ from src.carregar_dados import carregar_dados
 from src.filtros import aplicar_filtros
 from src.metricas import calcular_total_internacoes, calcular_media_poluente, montar_base_analise,calcular_correlacao,gerar_ranking_municipios,gerar_internacoes_por_mes, gerar_poluentes_por_mes
 from src.graficos import grafico_internacoes_por_mes
+from src.graficos import (grafico_internacoes_por_mes, grafico_poluentes_por_mes)
 
 st.set_page_config(
     page_title=" Poluição do ar e Internações - ES",
@@ -80,6 +81,7 @@ correlacao = calcular_correlacao(
     poluente=poluente_selecionado
 )
 
+#gerando as bases
 ranking_municipios = gerar_ranking_municipios(internacoes_filtrada)
 
 internacoes_por_mes = gerar_internacoes_por_mes(internacoes_filtrada)
@@ -120,8 +122,8 @@ st.dataframe(base_analise, use_container_width=True)
 #st.subheader("Internações por mês")
 #st.dataframe(internacoes_por_mes, use_container_width=True)
 
-st.subheader("Poluentes por mês")
-st.dataframe(poluentes_por_mes, use_container_width=True)
+#st.subheader("Poluentes por mês")
+#st.dataframe(poluentes_por_mes, use_container_width=True)
 
 st.subheader("Ranking de municípios")
 st.dataframe(ranking_municipios, use_container_width=True)
@@ -137,4 +139,16 @@ st.plotly_chart(
     fig_internacoes,
     use_container_width=True
 )
+
+#Exibição de gráfico - Poluentes por mês
+st.subheader("Poluentes por mês")
+
+fig_poluentes = grafico_poluentes_por_mes(poluentes_por_mes)
+
+st.plotly_chart(
+    fig_poluentes,
+    use_container_width=True
+)
+
+st.dataframe(poluentes_por_mes)
 
