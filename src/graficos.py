@@ -64,3 +64,60 @@ def grafico_poluentes_por_mes(poluentes_por_mes):
     )
 
     return fig
+
+#dispersão
+def grafico_dispersao_poluente_internacoes(base_analise, poluente):
+    """
+    Cria gráfico de dispersão entre o poluente selecionado e as internações.
+    """
+
+    fig = px.scatter(
+        base_analise,
+        x=poluente,
+        y="internacoes_total",
+        trendline="ols",
+        title=f"Dispersão: {poluente} x internações",
+        hover_data=["periodo", "ano", "mes"]
+    )
+
+    fig.update_layout(
+        xaxis_title=f"Média de {poluente}",
+        yaxis_title="Total de internações",
+        title_x=0.0
+    )
+
+    return fig
+
+#ranking de municipios
+def grafico_ranking_municipios(ranking_municipios, top_n=10):
+    """
+    Cria gráfico de barras horizontais com o ranking de municípios.
+    """
+
+    ranking_top = ranking_municipios.head(top_n).copy()
+
+    ranking_top = ranking_top.sort_values(
+        "internacoes_total",
+        ascending=True
+    )
+
+    fig = px.bar(
+        ranking_top,
+        x="internacoes_total",
+        y="municipio",
+        orientation="h",
+        text="internacoes_total",
+        title=f"Top {top_n} municípios por internações"
+    )
+
+    fig.update_layout(
+        xaxis_title="Total de internações",
+        yaxis_title="Município",
+        title_x=0.0
+    )
+
+    fig.update_traces(
+        textposition="outside"
+    )
+
+    return fig
